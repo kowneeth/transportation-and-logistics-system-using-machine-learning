@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+
+{% block title %}Book Shipment - TransportPro{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-box"></i> Book New Shipment</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <h5 class="border-bottom pb-2">Sender Details</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Full Name *</label>
+                            <input type="text" class="form-control" name="sender_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-control" name="sender_email" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Phone *</label>
+                            <input type="tel" class="form-control" name="sender_phone" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Address *</label>
+                            <textarea class="form-control" name="sender_address" rows="2" required></textarea>
+                        </div>
+                    </div>
+
+                    <h5 class="border-bottom pb-2 mt-4">Receiver Details</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Full Name *</label>
+                            <input type="text" class="form-control" name="receiver_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-control" name="receiver_email" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Phone *</label>
+                            <input type="tel" class="form-control" name="receiver_phone" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Address *</label>
+                            <textarea class="form-control" name="receiver_address" rows="2" required></textarea>
+                        </div>
+                    </div>
+
+                    <h5 class="border-bottom pb-2 mt-4">Package Details</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Origin *</label>
+                            <select class="form-select" name="origin" required>
+                                <option value="">Select Origin</option>
+                                {% for origin in origins %}
+                                <option value="{{ origin }}">{{ origin }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Destination *</label>
+                            <select class="form-select" name="destination" required>
+                                <option value="">Select Destination</option>
+                                {% for destination in destinations %}
+                                <option value="{{ destination }}">{{ destination }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Package Type *</label>
+                            <select class="form-select" name="package_type" required>
+                                <option value="Document">Document</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Clothing">Clothing</option>
+                                <option value="Food">Food</option>
+                                <option value="Fragile">Fragile</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Weight (kg) *</label>
+                            <input type="number" class="form-control" name="package_weight" step="0.01" min="0.1" max="500" inputmode="decimal" placeholder="e.g., 5.5" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label">Value (₹) *</label>
+                            <input type="number" class="form-control" name="package_value" min="1" max="999999" inputmode="numeric" placeholder="e.g., 1000" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Priority *</label>
+                            <select class="form-select" name="priority" required>
+                                <option value="standard">Standard (3-5 days)</option>
+                                <option value="express">Express (1-2 days)</option>
+                                <option value="same-day">Same Day</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Additional Services</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="insurance" id="insurance">
+                                <label class="form-check-label" for="insurance">
+                                    Insurance (1% of value)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="signature" id="signature">
+                                <label class="form-check-label" for="signature">
+                                    Signature Required
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-check-circle"></i> Book Shipment
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Ensure number inputs work properly
+    const numberInputs = document.querySelectorAll('input[type="number"]');
+    numberInputs.forEach(input => {
+        input.addEventListener('keydown', function(e) {
+            // Allow: backspace, delete, tab, escape, enter
+            if ([46, 8, 9, 27, 13, 110].indexOf(e.keyCode) !== -1 ||
+                // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                return;
+            }
+            // If the key is not a number (0-9), prevent input
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+        
+        // Allow decimal point
+        input.addEventListener('keypress', function(e) {
+            if (e.key === '.' && this.value.includes('.')) {
+                e.preventDefault();
+            }
+        });
+    });
+    
+    // Form validation
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        const weight = document.querySelector('input[name="package_weight"]').value;
+        const value = document.querySelector('input[name="package_value"]').value;
+        
+        if (!weight || weight <= 0) {
+            e.preventDefault();
+            alert('Please enter a valid weight (greater than 0)');
+            return;
+        }
+        
+        if (!value || value < 0) {
+            e.preventDefault();
+            alert('Please enter a valid package value');
+            return;
+        }
+    });
+});
+</script>
+{% endblock %}

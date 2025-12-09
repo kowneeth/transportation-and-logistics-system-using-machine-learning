@@ -1,0 +1,169 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+.btn {
+    border-radius: 5px;
+    padding: 8px 20px;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    border: none;
+}
+
+.btn-success {
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
+    border: none;
+}
+
+.btn-warning {
+    background: linear-gradient(45deg, #f39c12, #e67e22);
+    border: none;
+}
+
+.form-control, .form-select {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+input[type="number"] {
+    width: 100%;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: outer-spin-button;
+    opacity: 1;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Status indicators */
+.status-badge {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.status-booked { background-color: #3498db; color: white; }
+.status-picked { background-color: #9b59b6; color: white; }
+.status-transit { background-color: #f39c12; color: white; }
+.status-delivered { background-color: #2ecc71; color: white; }
+.status-delayed { background-color: #e74c3c; color: white; }
+
+/* Progress bar */
+.progress-container {
+    position: relative;
+    height: 30px;
+    margin: 20px 0;
+}
+
+.progress-step {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #ddd;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+    color: #666;
+    z-index: 2;
+}
+
+.progress-step.active {
+    background-color: #3498db;
+    color: white;
+}
+
+.progress-line {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    height: 2px;
+    background-color: #ddd;
+    z-index: 1;
+}
+
+.progress-line.active {
+    background-color: #3498db;
+}
+
+/* Dashboard cards */
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.stat-card h3 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.stat-card p {
+    margin: 10px 0 0 0;
+    color: #666;
+}
+
+/* Supplier cards */
+.supplier-card {
+    border-left: 4px solid #3498db;
+}
+
+.supplier-card.good {
+    border-left-color: #2ecc71;
+}
+
+.supplier-card.bad {
+    border-left-color: #e74c3c;
+}
+
+.supplier-card .rating {
+    color: #f39c12;
+    font-size: 1.2rem;
+}
+
+/* Number input styling */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: outer-spin-button;
+    opacity: 1;
+    height: auto;
+    margin: 0;
+}

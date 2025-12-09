@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}About - TransportPro{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-info-circle"></i> About TransportPro</h4>
+            </div>
+            <div class="card-body">
+                <h5>Smart Transportation Made Easy</h5>
+                <p>TransportPro is an AI-powered logistics platform designed to revolutionize package delivery and transportation management. We combine cutting-edge machine learning technology with a user-friendly interface to provide seamless logistics solutions.</p>
+
+                <h5 class="mt-4">Our Mission</h5>
+                <p>To make transportation and logistics more efficient, transparent, and accessible for businesses and individuals through intelligent automation and data-driven insights.</p>
+
+                <h5 class="mt-4">Key Features</h5>
+                <ul>
+                    <li><strong>Smart Booking System:</strong> Book shipments in seconds with real-time cost calculation</li>
+                    <li><strong>AI-Powered Predictions:</strong> Accurate delivery time estimates using machine learning</li>
+                    <li><strong>Supplier Recommendations:</strong> Find the best transporters based on historical performance</li>
+                    <li><strong>Real-time Tracking:</strong> Monitor your shipments every step of the way</li>
+                    <li><strong>Performance Analytics:</strong> Comprehensive dashboard with route and delivery statistics</li>
+                    <li><strong>Weather Integration:</strong> Adjust predictions based on weather conditions</li>
+                </ul>
+
+                <h5 class="mt-4">Technology Stack</h5>
+                <ul>
+                    <li><strong>Backend:</strong> Python Flask Web Framework</li>
+                    <li><strong>Machine Learning:</strong> Scikit-learn Random Forest Regression</li>
+                    <li><strong>Database:</strong> Excel Data Processing with Pandas</li>
+                    <li><strong>Frontend:</strong> Bootstrap 5 & Modern JavaScript</li>
+                </ul>
+
+                <h5 class="mt-4">Contact Us</h5>
+                <p>
+                    <strong>Email:</strong> support@transportpro.com<br>
+                    <strong>Phone:</strong> +91 9876543210<br>
+                    <strong>Address:</strong> Tamil Nadu, India
+                </p>
+
+                <div class="mt-4">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

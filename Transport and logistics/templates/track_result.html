@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Track Result - TransportPro{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="fas fa-check-circle"></i> Shipment Status</h4>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h5>Tracking ID: <strong>{{ shipment.tracking_id }}</strong></h5>
+                        <p><strong>Status:</strong> <span class="badge bg-info">{{ shipment.status }}</span></p>
+                        <p><strong>Origin:</strong> {{ shipment.origin }}</p>
+                        <p><strong>Destination:</strong> {{ shipment.destination }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Package Details</h5>
+                        <p><strong>Type:</strong> {{ shipment.package_type }}</p>
+                        <p><strong>Weight:</strong> {{ shipment.package_weight }} kg</p>
+                        <p><strong>Value:</strong> ₹{{ shipment.package_value }}</p>
+                    </div>
+                </div>
+
+                <h5 class="mb-3">Delivery Progress</h5>
+                <div class="progress-container">
+                    {% for update in status_updates %}
+                    <div class="progress-step {% if loop.index0 <= 2 %}active{% endif %}" style="left: {{ (loop.index0 * 25) }}%;">
+                        {{ loop.index }}
+                    </div>
+                    {% endfor %}
+                    <div class="progress-line {% if status_updates|length > 1 %}active{% endif %}"></div>
+                </div>
+
+                <div class="mt-4">
+                    {% for update in status_updates %}
+                    <div class="row mb-3">
+                        <div class="col-md-2">
+                            <span class="status-badge status-{% if update.status == 'Booked' %}booked{% elif update.status == 'Picked Up' %}picked{% elif update.status == 'In Transit' %}transit{% else %}delivered{% endif %}">
+                                {{ update.status }}
+                            </span>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>{{ update.location }}</strong>
+                        </div>
+                        <div class="col-md-4 text-muted">
+                            {{ update.time }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mt-4">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

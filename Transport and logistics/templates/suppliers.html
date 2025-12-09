@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Find Suppliers - TransportPro{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0"><i class="fas fa-users"></i> Find Best Suppliers</h4>
+            </div>
+            <div class="card-body">
+                <form method="GET">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Origin Location *</label>
+                            <select class="form-select" name="origin" required>
+                                <option value="">Select Origin</option>
+                                {% for loc in origins %}
+                                <option value="{{ loc }}" {% if origin == loc %}selected{% endif %}>{{ loc }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Destination Location *</label>
+                            <select class="form-select" name="destination" required>
+                                <option value="">Select Destination</option>
+                                {% for loc in destinations %}
+                                <option value="{{ loc }}" {% if destination == loc %}selected{% endif %}>{{ loc }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-warning btn-lg">
+                            <i class="fas fa-search"></i> Find Suppliers
+                        </button>
+                    </div>
+                </form>
+
+                {% if supplier_info %}
+                <hr>
+                <h5 class="mt-4">Route Performance</h5>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <h3 class="text-primary">{{ supplier_info.route_stats.total_deliveries }}</h3>
+                            <p>Total Deliveries</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <h3 class="text-success">{{ "%.2f"|format(supplier_info.route_stats.avg_rating) }}/5</h3>
+                            <p>Avg Rating</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <h3 class="text-info">{{ "%.0f"|format(supplier_info.route_stats.on_time_rate) }}%</h3>
+                            <p>On-Time Rate</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <h3 class="text-warning">₹{{ "%.0f"|format(supplier_info.route_stats.avg_cost) }}</h3>
+                            <p>Avg Cost</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="mt-4">Top Suppliers</h5>
+                {% for supplier in supplier_info.suppliers %}
+                <div class="card supplier-card mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h6>{{ supplier.supplier_name }} - {{ supplier.driver_name }}</h6>
+                                <p class="mb-1"><small><strong>Vehicle:</strong> {{ supplier.vehicle_no }}</small></p>
+                                <p class="mb-1"><small><strong>Location:</strong> {{ supplier.current_location }}</small></p>
+                                <p class="mb-1"><small><strong>Condition:</strong> {{ supplier.cargo_condition }}</small></p>
+                            </div>
+                            <div class="col-md-4 text-end">
+                                <div class="rating">
+                                    ★ {{ "%.1f"|format(supplier.rating) }}/5.0
+                                </div>
+                                <p class="mb-1"><small><strong>Delivery Time:</strong> {% if supplier.delivery_time %}{{ "%.0f"|format(supplier.delivery_time) }} min{% else %}N/A{% endif %}</small></p>
+                                <p class="mb-1"><small><strong>Cost:</strong> ₹{{ "%.0f"|format(supplier.fixed_cost) }}</small></p>
+                                <p><small><strong>On-Time:</strong> {% if supplier.on_time %}<span class="badge bg-success">Yes</span>{% else %}<span class="badge bg-danger">No</span>{% endif %}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% elif origin and destination %}
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle"></i> No suppliers found for this route. System will use ML prediction for delivery time estimates.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

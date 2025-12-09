@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - TransportPro{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center bg-light">
+            <div class="card-body">
+                <h2 class="text-primary">{{ total_shipments }}</h2>
+                <p>Total Shipments</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center bg-light">
+            <div class="card-body">
+                <h2 class="text-success">₹{{ "%.0f"|format(total_revenue) }}</h2>
+                <p>Total Revenue</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center bg-light">
+            <div class="card-body">
+                <h2 class="text-info">{{ (total_shipments * 98) / 100 }}</h2>
+                <p>On-Time Deliveries</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center bg-light">
+            <div class="card-body">
+                <h2 class="text-warning">98%</h2>
+                <p>Success Rate</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Popular Routes</h5>
+            </div>
+            <div class="card-body">
+                {% if popular_routes %}
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Route</th>
+                            <th>Shipments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for route, count in popular_routes %}
+                        <tr>
+                            <td>{{ route }}</td>
+                            <td><span class="badge bg-primary">{{ count }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="text-muted">No shipments yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Recent Shipments</h5>
+            </div>
+            <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                {% if shipments %}
+                {% for shipment in shipments %}
+                <div class="mb-3 pb-2 border-bottom">
+                    <p class="mb-1"><strong>{{ shipment.tracking_id }}</strong></p>
+                    <small class="text-muted">{{ shipment.origin }} → {{ shipment.destination }}</small>
+                    <br>
+                    <small><span class="badge bg-info">{{ shipment.status }}</span> ₹{{ "%.2f"|format(shipment.total_cost) }}</small>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="text-muted">No recent shipments.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

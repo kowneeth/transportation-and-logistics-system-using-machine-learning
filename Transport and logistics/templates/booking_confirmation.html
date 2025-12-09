@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Booking Confirmation - TransportPro{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="fas fa-check-circle"></i> Booking Confirmed!</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success">
+                    <h5>Your shipment has been successfully booked!</h5>
+                    <p class="mb-0">Keep your tracking ID safe for future reference.</p>
+                </div>
+
+                <h5 class="border-bottom pb-2">Booking Details</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>Tracking ID:</strong> <code>{{ tracking_id }}</code></p>
+                        <p><strong>Booking Date:</strong> {{ shipment.booking_date }}</p>
+                        <p><strong>Status:</strong> <span class="badge bg-info">{{ shipment.status }}</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Estimated Delivery:</strong> {{ "%.1f"|format(shipment.estimated_delivery_time/60) }} hours</p>
+                        <p><strong>Total Cost:</strong> ₹{{ "%.2f"|format(shipment.total_cost) }}</p>
+                    </div>
+                </div>
+
+                <h5 class="border-bottom pb-2 mt-4">Route Information</h5>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>From:</strong> {{ shipment.origin }}</p>
+                        <p><strong>To:</strong> {{ shipment.destination }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Package Type:</strong> {{ shipment.package_type }}</p>
+                        <p><strong>Weight:</strong> {{ shipment.package_weight }} kg</p>
+                    </div>
+                </div>
+
+                <h5 class="border-bottom pb-2 mt-4">Recipient Information</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Sender:</strong> {{ shipment.sender_name }}</p>
+                        <p><strong>Email:</strong> {{ shipment.sender_email }}</p>
+                        <p><strong>Phone:</strong> {{ shipment.sender_phone }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Receiver:</strong> {{ shipment.receiver_name }}</p>
+                        <p><strong>Email:</strong> {{ shipment.receiver_email }}</p>
+                        <p><strong>Phone:</strong> {{ shipment.receiver_phone }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="{{ url_for('track_shipment') }}" class="btn btn-success">Track Shipment</a>
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+
+{% block title %}Home - TransportPro{% endblock %}
+
+{% block content %}
+<div class="row align-items-center">
+    <div class="col-md-6">
+        <h1 class="display-4">Smart Transportation Made Easy</h1>
+        <p class="lead">AI-powered logistics platform for efficient package delivery, supplier recommendations, and real-time tracking.</p>
+        
+        <div class="row mt-4">
+            <div class="col-md-4 mb-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-shipping-fast fa-3x text-primary mb-3"></i>
+                        <h5>Book Shipment</h5>
+                        <p>Quick and easy package booking</p>
+                        <a href="{{ url_for('book_shipment') }}" class="btn btn-outline-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-search-location fa-3x text-success mb-3"></i>
+                        <h5>Track Package</h5>
+                        <p>Real-time tracking updates</p>
+                        <a href="{{ url_for('track_shipment') }}" class="btn btn-outline-success">Track Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-3x text-warning mb-3"></i>
+                        <h5>Find Suppliers</h5>
+                        <p>Best transporters for your route</p>
+                        <a href="{{ url_for('find_suppliers') }}" class="btn btn-outline-warning">Find Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-route"></i> Delivery Time Predictor</h5>
+            </div>
+            <div class="card-body">
+                <form id="predictionForm">
+                    <div class="mb-3">
+                        <label for="origin" class="form-label">From (Origin)</label>
+                        <select class="form-select" id="origin" required>
+                            <option value="">Select Origin</option>
+                            {% for origin in origins %}
+                            <option value="{{ origin }}">{{ origin }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="destination" class="form-label">To (Destination)</label>
+                        <select class="form-select" id="destination" required>
+                            <option value="">Select Destination</option>
+                            {% for destination in destinations %}
+                            <option value="{{ destination }}">{{ destination }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="condition" class="form-label">Weather Condition</label>
+                        <select class="form-select" id="condition">
+                            <option value="Sunny">Sunny</option>
+                            <option value="Cloudy">Cloudy</option>
+                            <option value="Rainy">Rainy</option>
+                            <option value="Stormy">Stormy</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-calculator"></i> Predict Delivery Time
+                    </button>
+                </form>
+                
+                <div id="predictionResult" class="mt-3" style="display: none;">
+                    <div class="alert alert-success">
+                        <h6>Predicted Delivery Time:</h6>
+                        <p id="predictedTime" class="h4 mb-0"></p>
+                        <small id="routeInfo"></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-12">
+        <h3 class="mb-4">System Statistics</h3>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card text-center bg-light">
+                    <div class="card-body">
+                        <h2 class="text-primary">{{ total_routes }}</h2>
+                        <p>Available Routes</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-light">
+                    <div class="card-body">
+                        <h2 class="text-success">{{ origins|length }}</h2>
+                        <p>Origin Locations</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-light">
+                    <div class="card-body">
+                        <h2 class="text-warning">{{ destinations|length }}</h2>
+                        <p>Destination Locations</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-light">
+                    <div class="card-body">
+                        <h2 class="text-danger">98%</h2>
+                        <p>On-time Delivery Rate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const origin = document.getElementById('origin').value;
+    const destination = document.getElementById('destination').value;
+    const condition = document.getElementById('condition').value;
+    
+    try {
+        const response = await fetch('/api/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                origin: origin,
+                destination: destination,
+                condition: condition
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            const resultDiv = document.getElementById('predictionResult');
+            const predictedTime = document.getElementById('predictedTime');
+            const routeInfo = document.getElementById('routeInfo');
+            
+            predictedTime.innerHTML = 
+                `${data.predicted_delivery_time_minutes.toFixed(0)} minutes<br>
+                 <small>(${data.predicted_delivery_time_hours} hours)</small>`;
+            
+            routeInfo.innerHTML = 
+                `Route: ${data.origin} → ${data.destination}<br>
+                 Condition: ${data.condition}`;
+            
+            resultDiv.style.display = 'block';
+        } else {
+            alert('Error: ' + data.error);
+        }
+    } catch (error) {
+        alert('Error predicting delivery time');
+    }
+});
+</script>
+{% endblock %}
